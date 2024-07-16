@@ -24,8 +24,10 @@ if __name__ == "__main__":
     translated_transcription = None
 
     import pickle
-    with open("/Users/enyiomaosondu/personal/final-year-project/transcription.pkl", "wb") as f:
+    with open("/Users/enyiomaosondu/personal/final-year-project/transcription.pkl", "rb") as f:
         translated_transcription = pickle.load(f)
 
     ...
-    synthesizer.synthesize(translated_transcription, translated_transcription.language)
+    audio_fp = synthesizer.synthesize(translated_transcription, translated_transcription.language)
+    with open("/Users/enyiomaosondu/personal/final-year-project/output.mp3", "wb") as f:
+        f.write(audio_fp.getbuffer())
