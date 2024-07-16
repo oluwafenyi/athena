@@ -1,0 +1,9 @@
+.ipynb_checkpoints/
+env/
+flagged/
+*.mp4
+*.wav
+*.pkl
+.DS_Store
+__pycache__/
+.env
