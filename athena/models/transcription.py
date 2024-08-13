@@ -1,5 +1,5 @@
 from typing import List
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 
 from .speech_segment import SpeechSegment
 
@@ -8,3 +8,6 @@ from .speech_segment import SpeechSegment
 class Transcription:
     language: str
     speech_segments: List[SpeechSegment]
+
+    def as_dict(self) -> dict:
+        return asdict(self)

@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 
 
 @dataclass
@@ -7,3 +7,6 @@ class SpeechSegment:
     start: float
     end: float
     text: str
+
+    def as_dict(self) -> dict:
+        return asdict(self)

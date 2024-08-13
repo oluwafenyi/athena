@@ -4,7 +4,7 @@ import gtts
 from pydub import AudioSegment
 
 from models.transcription import Transcription
-from utils import adjust_audio_playback_speed, join_audio_segments
+from utils import load_audio_segment, join_audio_segments
 from .synthesizer import Synthesizer
 
 
@@ -16,7 +16,7 @@ class GoogleTTSSynthesizer(Synthesizer):
         for seg in transcription.speech_segments:
             silence_duration = seg.start - last_end
 
-            if (seg.start - last_end > 0):
+            if (silence_duration > 0):
                 audio_segments.append(AudioSegment.silent(duration=silence_duration*1000))
 
             last_end = seg.end
@@ -24,7 +24,7 @@ class GoogleTTSSynthesizer(Synthesizer):
             fp = BytesIO()
             result.write_to_fp(fp)
             fp.seek(0)
-            adjusted_fp = adjust_audio_playback_speed(fp, seg.end - seg.start, "mp3")
+            adjusted_fp = load_audio_segment(fp, format="mp3", fit_audio=True, audio_length=seg.end - seg.start)
             audio_segments.append(adjusted_fp)
 
         output_fp = BytesIO()

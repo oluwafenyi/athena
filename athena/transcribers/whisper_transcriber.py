@@ -30,8 +30,8 @@ class WhisperTranscriber(Transcriber):
         ])
 
 
-    def transcribe(self, audio_stream: bytes, source_language: str) -> Transcription:
+    def transcribe(self, audio_stream_or_file_path: bytes | str, source_language: str) -> Transcription:
         # audio_array = np.frombuffer(audio_stream, np.int16).flatten().astype(np.float32) / 32768.0
-        results = self._model.transcribe("/Users/enyiomaosondu/personal/final-year-project/sample.wav")
+        results = self._model.transcribe(audio_stream_or_file_path)
         transcription = self._load_transcription(results.get("segments"), results.get("language"))
         return transcription
