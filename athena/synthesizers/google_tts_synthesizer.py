@@ -14,7 +14,7 @@ class GoogleTTSSynthesizer(Synthesizer):
         last_end = 0
 
         for seg in transcription.speech_segments:
-            silence_duration = seg.start - last_end
+            silence_duration = last_end - seg.start
 
             if (silence_duration > 0):
                 audio_segments.append(AudioSegment.silent(duration=silence_duration*1000))

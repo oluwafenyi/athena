@@ -26,20 +26,20 @@ if __name__ == "__main__":
     # transcription = transcriber.transcribe("/Users/enyiomaosondu/personal/final-year-project/sample.wav", "en")
     # store_transcription(transcription, "/Users/enyiomaosondu/personal/final-year-project/transcription-untranslated.pkl")
 
-    transcription = load_transcription("/Users/enyiomaosondu/personal/final-year-project/transcription-untranslated.pkl")
-    translated_transcription = translator.translate(transcription, "fr")
+    # transcription = load_transcription("/Users/enyiomaosondu/personal/final-year-project/transcription-untranslated.pkl")
+    # translated_transcription = translator.translate(transcription, "fr")
 
-    # translated_transcription = None
+    translated_transcription = None
 
-    # import pickle
-    # with open("/Users/enyiomaosondu/personal/final-year-project/transcription.pkl", "rb") as f:
-    #     translated_transcription = pickle.load(f)
+    import pickle
+    with open("/Users/enyiomaosondu/personal/final-year-project/transcription-translated-rephrased.pkl", "rb") as f:
+        translated_transcription = pickle.load(f)
 
-    store_transcription(translated_transcription, "/Users/enyiomaosondu/personal/final-year-project/transcription-translated-rephrased.pkl")
+    # store_transcription(translated_transcription, "/Users/enyiomaosondu/personal/final-year-project/transcription-translated-rephrased.pkl")
 
     # ...
     audio_fp = synthesizer.synthesize(translated_transcription, translated_transcription.language)
     with open("/Users/enyiomaosondu/personal/final-year-project/output.mp3", "wb") as f:
         f.write(audio_fp.getbuffer())
 
-    synchronizer.merge_audio_with_video(video_path="/Users/enyiomaosondu/personal/final-year-project/motivation.mp4", audio_path="/Users/enyiomaosondu/personal/final-year-project/output.mp3")
+    # synchronizer.merge_audio_with_video(video_path="/Users/enyiomaosondu/personal/final-year-project/motivation.mp4", audio_path="/Users/enyiomaosondu/personal/final-year-project/output.mp3", result_path="/Users/enyiomaosondu/personal/final-year-project/final-video.mp4")
