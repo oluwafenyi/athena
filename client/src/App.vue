@@ -44,8 +44,21 @@ export default {
       formData.append('source_language_code', this.sourceLanguageCode)
       formData.append('target_language_code', this.targetLanguageCode)
       try {
-        const response = await axios.post('http://localhost:8000/translate/', formData)
+        const response = await axios.post('http://localhost:8000/translate/', formData, {
+          responseType: 'blob'
+        })
         console.log(response)
+        this.translatedVideoDataUrl = await this.blobToDataURL(response.data)
+        const responseFileName = this.getResponseFileName(response)
+        if (responseFileName) {
+          this.translatedVideoName
+        }
+
+        await this.$nextTick();
+        const element = document.getElementById('output');
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
       } catch (error) {
         console.log(error)
         this.toast.error('An error occurred with the translation request.')
@@ -64,6 +77,33 @@ export default {
       }
 
       return new Blob([arrayBuffer], { type: mime })
+    },
+    getResponseFileName(response) {
+      const contentDisposition = response.headers['content-disposition']
+      let filename = null
+
+      if (contentDisposition) {
+        const filenameMatch = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)
+        if (filenameMatch && filenameMatch[1]) {
+          filename = filenameMatch[1].replace(/['"]/g, '') // Remove quotes around filename
+        }
+      }
+      return filename
+    },
+    async blobToDataURL(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+
+        reader.onloadend = function () {
+          resolve(reader.result)
+        }
+
+        reader.onerror = function (error) {
+          reject(error)
+        }
+
+        reader.readAsDataURL(blob)
+      })
     }
   },
   data() {
@@ -71,6 +111,7 @@ export default {
       inputVideoDataUrl: null,
       inputFileName: null,
       translatedVideoDataUrl: null,
+      translatedVideoName: null,
       sourceLanguageCode: null,
       targetLanguageCode: null,
       isLoading: false
@@ -92,7 +133,7 @@ export default {
       background-color="lightblue"
     />
 
-    <VideoContainer
+    <VideoContainer id="input"
       @inputVideoUpdate="receiveInputVideo"
       @languageSelectionUpdate="receiveLanguageCode"
       @translateVideo="translateVideo"
@@ -100,7 +141,7 @@ export default {
       forUpload
     />
 
-    <VideoContainer v-if="translatedVideoDataUrl !== null" :videoDataUrl="translatedVideoDataUrl" />
+    <VideoContainer id="output" v-if="translatedVideoDataUrl !== null" :videoDataUrl="translatedVideoDataUrl" :videoFileName="translatedVideoName" />
   </main>
 </template>
 

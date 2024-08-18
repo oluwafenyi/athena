@@ -10,6 +10,10 @@ export default {
     },
     videoDataUrl: {
       type: String
+    },
+    videoFileName: {
+      type: String,
+      default: 'translated-video.mp4'
     }
   },
   components: {
@@ -34,6 +38,14 @@ export default {
       } else {
         this.$emit('inputVideoUpdate', null, null)
       }
+    },
+    handleVideoDownload() {
+      const link = document.createElement('a')
+      link.href = this.videoDataUrl
+      link.setAttribute('download', this.videoFileName)
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
     }
   },
   data() {
@@ -51,6 +63,9 @@ export default {
 
 <template>
   <div class="wrapper">
+    <h1 v-if="forUpload">Athena: Video-to-Video Translation</h1>
+    <h1 v-else>Translated Video</h1>
+
     <div class="centered-box">
       <UploadIcon v-if="forUpload && videoDataUrl === null" @click="handleUploadButtonClick" />
       <form v-if="forUpload">
@@ -104,10 +119,20 @@ export default {
         <button @click="$emit('translateVideo')">Translate</button>
       </div>
     </div>
+    <div class="form-container" v-else>
+      <div class="fields-container"></div>
+      <div class="buttons-container">
+        <button @click="handleVideoDownload">Download</button>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
+h1 {
+    color: rgb(124, 145, 151);
+}
+
 .wrapper {
   display: flex;
   justify-content: center; /* Center horizontally */
@@ -130,10 +155,6 @@ export default {
   border-width: thick;
   border-color: lightblue;
   border-style: solid;
-}
-
-.centered-box:hover {
-  cursor: pointer;
 }
 
 .form-container {

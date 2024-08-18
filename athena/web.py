@@ -77,7 +77,8 @@ async def translate(video_file: UploadFile = Form(...), source_language_code: st
             await f.write(content)
 
     output_path = process_translation(input_path, source_language_code, target_language_code)
-    return FileResponse(output_path)
+    file_name = os.path.basename(output_path)
+    return FileResponse(output_path, filename=file_name)
 
 
 if __name__ == "__main__":
