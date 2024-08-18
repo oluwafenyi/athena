@@ -6,6 +6,7 @@ from typing import Annotated
 
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 import uvicorn
 
@@ -26,7 +27,15 @@ transcriber = WhisperTranscriber()
 translator = GoogleTranslatorWithRephrasing()
 synthesizer = GoogleTTSSynthesizer()
 synchronizer = AudioVideoSynchronizer()
+
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class TranslationPayload(BaseModel):
