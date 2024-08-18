@@ -9,3 +9,4 @@ flagged/
 __pycache__/
 .env
 .vscode/
+cookies/
