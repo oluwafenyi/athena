@@ -13,7 +13,6 @@ export default {
     },
     videoFileName: {
       type: String,
-      default: 'translated-video.mp4'
     }
   },
   components: {

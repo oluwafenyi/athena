@@ -47,11 +47,10 @@ export default {
         const response = await axios.post('http://localhost:8000/translate/', formData, {
           responseType: 'blob'
         })
-        console.log(response)
         this.translatedVideoDataUrl = await this.blobToDataURL(response.data)
         const responseFileName = this.getResponseFileName(response)
         if (responseFileName) {
-          this.translatedVideoName
+          this.translatedVideoName = responseFileName;
         }
 
         await this.$nextTick();
@@ -111,7 +110,7 @@ export default {
       inputVideoDataUrl: null,
       inputFileName: null,
       translatedVideoDataUrl: null,
-      translatedVideoName: null,
+      translatedVideoName: "translated-video.mp4",
       sourceLanguageCode: null,
       targetLanguageCode: null,
       isLoading: false

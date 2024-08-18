@@ -78,7 +78,8 @@ async def translate(video_file: UploadFile = Form(...), source_language_code: st
 
     output_path = process_translation(input_path, source_language_code, target_language_code)
     file_name = os.path.basename(output_path)
-    return FileResponse(output_path, filename=file_name)
+    headers = {"Access-Control-Expose-Headers": "Content-Disposition"}
+    return FileResponse(output_path, filename=file_name, headers=headers)
 
 
 if __name__ == "__main__":
