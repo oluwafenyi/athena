@@ -12,7 +12,7 @@ export default {
       type: String
     },
     videoFileName: {
-      type: String,
+      type: String
     }
   },
   components: {
@@ -51,8 +51,18 @@ export default {
     return {
       supportedLanguages: [
         { id: 1, name: 'English', code: 'en' },
-        { id: 2, name: 'French', code: 'fr' },
-        { id: 3, name: 'Spanish', code: 'es' }
+        { id: 2, name: 'German', code: 'de' },
+        { id: 3, name: 'Spanish', code: 'es' },
+        { id: 4, name: 'French', code: 'fr' },
+        { id: 5, name: 'Hindi', code: 'hi' },
+        { id: 6, name: 'Italian', code: 'it' },
+        { id: 7, name: 'Japanese', code: 'ja' },
+        { id: 8, name: 'Korean', code: 'ko' },
+        { id: 9, name: 'Polish', code: 'pl' },
+        { id: 10, name: 'Portuguese', code: 'pt' },
+        { id: 11, name: 'Russian', code: 'ru' },
+        { id: 12, name: 'Turkish', code: 'tr' },
+        { id: 13, name: 'Chinese', code: 'zh' }
       ],
       sourceLanguageCode: null
     }
@@ -129,7 +139,7 @@ export default {
 
 <style scoped>
 h1 {
-    color: rgb(124, 145, 151);
+  color: rgb(124, 145, 151);
 }
 
 .wrapper {

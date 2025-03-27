@@ -12,8 +12,8 @@ import uvicorn
 
 from audio_extractor import AudioExtractor
 from transcribers.whisper_transcriber import WhisperTranscriber
-from translators.google_translator import GoogleTranslatorWithRephrasing
-from synthesizers.google_tts_synthesizer import GoogleTTSSynthesizer
+from translators.openai_translator import OpenAITranslator
+from synthesizers.bark_synthesizer import BarkSynthesizer
 from audio_video_synchronizer import AudioVideoSynchronizer
 from utils import watermark_video
 
@@ -21,11 +21,12 @@ from utils import watermark_video
 TEMP_DIRECTORY = "/Users/enyiomaosondu/personal/final-year-project/athena_media/temp"
 INPUT_DIRECTORY_PATH = "/Users/enyiomaosondu/personal/final-year-project/athena_media/inputs"
 OUTPUT_DIRECTORY_PATH = "/Users/enyiomaosondu/personal/final-year-project/athena_media/outputs"
+open_ai_api_key = os.getenv("OPENAI_API_KEY")
 
 extractor = AudioExtractor()
 transcriber = WhisperTranscriber()
-translator = GoogleTranslatorWithRephrasing()
-synthesizer = GoogleTTSSynthesizer()
+translator = OpenAITranslator(open_ai_api_key)
+synthesizer = BarkSynthesizer()
 synchronizer = AudioVideoSynchronizer()
 
 app = FastAPI()
@@ -52,7 +53,7 @@ def process_translation(video_path, source_language, target_language) -> str:
 
     source_transcription = transcriber.transcribe(temp_source_audio_file_path, source_language=source_language)
     translated_transcription = translator.translate(source_transcription, target_language=target_language)
-    print(translated_transcription.as_dict())
+    print(translated_transcription.model_dump_json())
     target_audio_fp = synthesizer.synthesize(translated_transcription, translated_transcription.language)
     temp_target_audio_file_path = os.path.join(TEMP_DIRECTORY, f"{uuid.uuid4()}.mp3")
     with open(temp_target_audio_file_path, "wb") as f:

@@ -1,12 +1,9 @@
-from dataclasses import dataclass, asdict
+
+from pydantic import BaseModel
 
 
-@dataclass
-class SpeechSegment:
+class SpeechSegment(BaseModel):
     identifier: int
     start: float
     end: float
     text: str
-
-    def as_dict(self) -> dict:
-        return asdict(self)
